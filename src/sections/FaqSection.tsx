@@ -1,7 +1,7 @@
 // src/sections/FaqSection.tsx
 import React from 'react';
 import { Typography, Collapse, Space } from 'antd';
-import { LockOutlined, QuestionCircleOutlined, ApiOutlined, BarChartOutlined, ExperimentOutlined, GlobalOutlined /* Добавлена иконка */ } from '@ant-design/icons';
+import { LockOutlined,BarChartOutlined, ExperimentOutlined, GlobalOutlined /* Добавлена иконка */ } from '@ant-design/icons';
 
 const { Title, Paragraph, Text } = Typography; // Добавили Text
 const { Panel } = Collapse;

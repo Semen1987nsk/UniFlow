@@ -2,7 +2,7 @@
 import React from 'react';
 import { Row, Col, Typography, Card } from 'antd';
 // Более технологичные иконки + иконка плюса
-import { BookOutlined, EditOutlined, RobotOutlined, AreaChartOutlined, PlusOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import {EditOutlined, PlusOutlined, ThunderboltOutlined } from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;
 
