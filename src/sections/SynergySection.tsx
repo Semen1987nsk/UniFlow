@@ -26,7 +26,7 @@ const cardStyle: React.CSSProperties = {
 const cardIconStyle: React.CSSProperties = {
     fontSize: '48px', // Крупнее иконка
     color: '#1890ff',
-    marginBottom: '20px',
+    marginBottom: '20px',  // Тестовый комментарий для Git
 };
 
 const SynergySection: React.FC = () => {

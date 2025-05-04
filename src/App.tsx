@@ -10,7 +10,7 @@ import SynergySection from './sections/SynergySection.tsx'; // <-- Добавл�
 import HowItWorksSection from './sections/HowItWorksSection.tsx';
 import ProblemSection from './sections/ProblemSection.tsx';
 import SolutionSection from './sections/SolutionSection.tsx';
-import ExampleInsightSection from './sections/ExampleInsightSection.tsx';
+import ExampleInsightSection from './sections/ExampleInsightSection.tsx';  // Тестовый комментарий для Git
 import FeaturesSection from './sections/FeaturesSection.tsx';
 import ComparisonSection from './sections/ComparisonSection.tsx';
 import SocialProofSection from './sections/SocialProofSection.tsx';

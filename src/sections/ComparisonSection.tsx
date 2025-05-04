@@ -1,7 +1,7 @@
 // src/sections/ComparisonSection.tsx
 import React from 'react';
 import { Row, Col, Typography } from 'antd';
-import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
+import { CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';  // Тестовый комментарий для Git
 
 const { Title, Text } = Typography; // Используем Text для описаний
 
