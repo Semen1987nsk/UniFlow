@@ -1,155 +1,207 @@
+/* src/App.css */
+
 /* Убираем стандартные отступы и задаем box-sizing */
 *, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* Базовые стили для всей страницы */
-body {
-  font-family: 'Inter', sans-serif; /* Основной шрифт */
-  font-weight: 400;
-  line-height: 1.65; /* Улучшает читаемость */
-  color: #344054; /* Чуть более мягкий темный для текста */
-  background-color: #fff;
-  -webkit-font-smoothing: antialiased; /* Сглаживание шрифтов в Webkit */
-  -moz-osx-font-smoothing: grayscale; /* Сглаживание шрифтов в Firefox */
-}
-
-/* Стили для заголовков */
-h1, h2, h3, h4, h5, h6,
-.ant-typography h1,
-.ant-typography h2,
-.ant-typography h3,
-.ant-typography h4,
-.ant-typography h5,
-.ant-typography h6 {
-  font-family: 'Poppins', sans-serif; /* Шрифт для заголовков */
-  font-weight: 600; /* Полужирное начертание по умолчанию */
-  line-height: 1.3;
-  color: #101828; /* Очень темный, почти черный для заголовков */
-  margin-bottom: 0.75em; /* Добавляем разумный отступ снизу */
-}
-/* Отменяем лишний отступ у заголовков AntD внутри карточек */
-.ant-card-body h1, .ant-card-body h2, .ant-card-body h3, .ant-card-body h4, .ant-card-body h5, .ant-card-body h6 {
-    margin-bottom: 0.5em;
-}
-
-
-/* Переопределяем цвет основного текста Ant Design */
-.ant-typography {
-    color: #344054; /* Основной цвет текста для параграфов AntD */
-    line-height: 1.65;
-}
-
-/* Добавляем легкую тень и скругление карточкам */
-.ant-card {
-    border-radius: 12px !important; /* Более заметное скругление */
-    box-shadow: 0 5px 20px rgba(16, 24, 40, 0.05) !important; /* Легкая, но заметная тень */
-    border: none !important; /* Убираем стандартную рамку */
-    background-color: #fff !important; /* Убедимся, что фон белый */
-}
-/* Дополнительный стиль для карточек в секции Проблемы (чтобы не было лишнего фона) */
-.problem-section .ant-card {
-     background-color: transparent !important; /* Убираем фон у карточек проблем */
-     box-shadow: none !important; /* Убираем тень у карточек проблем */
-     text-align: center;
-}
-.problem-section .ant-card-body {
-    padding: 16px !important; /* Уменьшим падинг */
-}
-
-
-/* Стиль для иконок в карточках фич */
-.feature-icon svg {
-    /* Можно настроить, если нужно */
-    /* Например, transition: transform 0.3s ease; */
-}
-/* Hover эффект для карточек фич */
-.features-section .ant-card:hover {
-    transform: translateY(-5px); /* Легкий подъем */
-    box-shadow: 0 10px 25px rgba(16, 24, 40, 0.08) !important; /* Усиление тени */
-    transition: all 0.3s ease-out;
-}
-.features-section .ant-card:hover .feature-icon svg {
-   /* transform: scale(1.1); */ /* Легкое увеличение иконки при наведении на карточку */
-}
-
-
-/* Улучшаем вид контейнера для макета */
-.mockup-container {
-  background: linear-gradient(135deg, #f0f9ff 0%, #e6f0ff 100%); /* Более светлый градиент */
-  height: 350px; /* Можно настроить */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px; /* Скругление как у карточек */
-  border: none;
-  /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); */ /* Можно добавить легкую тень */
-  padding: 20px;
-}
-.mockup-container .ant-typography {
-   color: #475467; /* Немного темнее текст заглушки */
-   font-size: 16px;
-   font-weight: 500; /* Inter Medium */
-   text-align: center;
-}
-
-/* Центрирование плейсхолдера в форме ввода */
-#cta-form input::placeholder {
-    text-align: center;
-    color: #98a2b3; /* Цвет плейсхолдера */
-}
-#cta-form input {
-    border-color: rgba(255, 255, 255, 0.5); /* Сделаем границу инпута чуть виднее на синем фоне */
-}
-
-/* Увеличим отклик кнопок */
-.ant-btn {
-     border-radius: 8px !important; /* Скругление кнопок */
-     font-weight: 500 !important; /* Шрифт Inter Medium для кнопок */
-     transition: all 0.3s ease; /* Плавный переход для hover */
-     box-shadow: 0 2px 5px rgba(16, 24, 40, 0.06); /* Легкая тень для всех кнопок */
-}
-.ant-btn:hover {
-    transform: translateY(-2px); /* Легкий подъем при наведении */
-}
-
-.ant-btn-primary {
-    border: none !important; /* Убираем границу у основной кнопки */
-}
-.ant-btn-primary:not(.ant-btn-dangerous):hover {
-    background-color: #0056b3 !important; /* Немного темнее синий при наведении */
-    box-shadow: 0 6px 15px rgba(24, 144, 255, 0.3); /* Тень для основной кнопки */
-}
-.ant-btn-primary.ant-btn-dangerous {
-     background-color: #ff4d4f !important; /* Стандартный danger цвет */
-     border: none !important;
-}
-.ant-btn-primary.ant-btn-dangerous:hover {
-     background-color: #d9363e !important; /* Темнее danger при наведении */
-     box-shadow: 0 6px 15px rgba(255, 77, 79, 0.3); /* Тень для danger кнопки */
-}
-
-/* Дополнительные стили для чистоты */
-a {
-  color: #1890ff;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-a:hover {
-  color: #0056b3; /* Темнее при наведении */
-}
-
-/* Адаптивность для больших отступов на мобильных */
-@media (max-width: 767px) {
-    h1, .ant-typography h1 { font-size: 2rem; }
-    h2, .ant-typography h2 { font-size: 1.5rem; }
-    h3, .ant-typography h3 { font-size: 1.25rem; }
-
-    /* Уменьшаем вертикальные отступы секций на мобильных */
-    .section-padding {
-        padding-top: 40px !important;
-        padding-bottom: 40px !important;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Базовые стили для всей страницы */
+  body {
+    font-family: 'Inter', sans-serif; /* Основной шрифт */
+    font-weight: 400;
+    line-height: 1.65; /* Улучшает читаемость */
+    color: #344054; /* Чуть более мягкий темный для текста */
+    background-color: #fff;
+    -webkit-font-smoothing: antialiased; /* Сглаживание шрифтов в Webkit */
+    -moz-osx-font-smoothing: grayscale; /* Сглаживание шрифтов в Firefox */
+  }
+  
+  /* Стили для заголовков */
+  h1, h2, h3, h4, h5, h6,
+  .ant-typography h1,
+  .ant-typography h2,
+  .ant-typography h3,
+  .ant-typography h4,
+  .ant-typography h5,
+  .ant-typography h6 {
+    font-family: 'Poppins', sans-serif; /* Шрифт для заголовков */
+    font-weight: 600; /* Полужирное начертание по умолчанию */
+    line-height: 1.3;
+    color: #101828; /* Очень темный, почти черный для заголовков */
+    margin-bottom: 0.75em; /* Добавляем разумный отступ снизу */
+  }
+  /* Отменяем лишний отступ у заголовков AntD внутри карточек */
+  .ant-card-body h1, .ant-card-body h2, .ant-card-body h3, .ant-card-body h4, .ant-card-body h5, .ant-card-body h6 {
+      margin-bottom: 0.5em;
+  }
+  
+  
+  /* Переопределяем цвет основного текста Ant Design */
+  .ant-typography {
+      color: #344054; /* Основной цвет текста для параграфов AntD */
+      line-height: 1.65;
+  }
+  
+  /* Добавляем легкую тень и скругление карточкам (если не задано inline) */
+  .ant-card:not(.problem-card) { /* Исключаем карточки проблем */
+      border-radius: 12px !important; /* Более заметное скругление */
+      box-shadow: 0 5px 20px rgba(16, 24, 40, 0.05) !important; /* Легкая, но заметная тень */
+      border: none !important; /* Убираем стандартную рамку */
+      background-color: #fff !important; /* Убедимся, что фон белый */
+  }
+  /* Стиль для карточек в секции Проблемы */
+  .problem-section .problem-card {
+       background-color: transparent !important; /* Убираем фон у карточек проблем */
+       box-shadow: none !important; /* Убираем тень у карточек проблем */
+       text-align: center;
+       border: none !important;
+  }
+  .problem-section .problem-card .ant-card-body {
+      padding: 16px !important; /* Уменьшим падинг */
+  }
+  
+  
+  /* Стиль для иконок в карточках фич */
+  .feature-icon svg {
+      /* Можно настроить, если нужно */
+  }
+  /* Hover эффект для карточек фич */
+  .features-section-outer .feature-card:hover { /* Используем классы для точности */
+      transform: translateY(-5px); /* Легкий подъем */
+      box-shadow: 0 10px 25px rgba(16, 24, 40, 0.08) !important; /* Усиление тени */
+      transition: all 0.3s ease-out;
+  }
+  .features-section-outer .feature-card:hover .feature-icon svg {
+     /* transform: scale(1.1); */
+  }
+  
+  
+  /* Улучшаем вид контейнера для макета (в SolutionSection) */
+  .mockup-container {
+    /* Стили для заглушки, если она используется */
+    /* background: linear-gradient(135deg, #f0f9ff 0%, #e6f0ff 100%); */
+    /* height: 350px; */
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* border-radius: 12px; */
+    /* border: none; */
+    /* padding: 20px; */
+  }
+  .mockup-container .ant-typography {
+     /* color: #475467; */
+     /* font-size: 16px; */
+     /* font-weight: 500; */
+     /* text-align: center; */
+  }
+  
+  /* Центрирование плейсхолдера в форме ввода CTA */
+  #cta-form input::placeholder {
+      text-align: center;
+      color: #98a2b3;
+  }
+  #cta-form input {
+      /* border-color: rgba(255, 255, 255, 0.5); */ /* Можно раскомментировать, если граница плохо видна */
+  }
+  
+  /* Увеличим отклик кнопок */
+  .ant-btn {
+       border-radius: 8px !important;
+       font-weight: 500 !important;
+       transition: all 0.3s ease;
+       box-shadow: 0 2px 5px rgba(16, 24, 40, 0.06);
+  }
+  .ant-btn:hover {
+      transform: translateY(-2px);
+  }
+  .ant-btn-primary {
+      border: none !important;
+  }
+  .ant-btn-primary:not(.ant-btn-dangerous):hover {
+      background-color: #0056b3 !important;
+      box-shadow: 0 6px 15px rgba(24, 144, 255, 0.3);
+  }
+  .ant-btn-primary.ant-btn-dangerous {
+       background-color: #ff4d4f !important;
+       border: none !important;
+  }
+  .ant-btn-primary.ant-btn-dangerous:hover {
+       background-color: #d9363e !important;
+       box-shadow: 0 6px 15px rgba(255, 77, 79, 0.3);
+  }
+  
+  /* Дополнительные стили для чистоты */
+  a {
+    color: #1890ff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover {
+    color: #0056b3;
+  }
+  
+  /* Общие отступы секций */
+  .section-padding {
+      /* Управляется inline-стилями в компонентах */
+  }
+  
+  
+  /* --- СТИЛИ ДЛЯ АДАПТИВНОЙ ШАПКИ --- */
+  
+  /* Стили по умолчанию для больших экранов */
+  .header-content-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%; /* Занимаем высоту шапки */
+  }
+  
+  /* Стили для мобильной шапки */
+  @media (max-width: 576px) { /* Точка перехода для мобильных */
+  
+    /* Контейнер для лого и кнопки */
+    .header-content-wrapper {
+      flex-direction: column; /* Ставим элементы друг под другом */
+      align-items: center; /* Центрируем по горизонтали */
+      justify-content: center; /* Центрируем по вертикали */
+      padding-top: 10px;    /* Добавляем отступ сверху */
+      padding-bottom: 10px; /* Добавляем отступ снизу */
+      height: auto; /* Позволяем высоте шапки подстроиться */
     }
-}
+  
+    /* Логотип */
+    .header-content-wrapper .logo {
+      margin-bottom: 10px; /* Добавляем отступ под логотипом */
+      font-size: 20px; /* Можно немного уменьшить лого */
+    }
+  
+    /* Кнопка */
+    .header-content-wrapper .ant-btn {
+      /* Стили для кнопки на мобильных, если нужно */
+    }
+  
+    /* Переопределяем высоту стандартной шапки AntD */
+    .ant-layout-header {
+       height: auto !important; /* Позволяем высоте подстроиться */
+       line-height: normal !important; /* Сбрасываем line-height */
+       padding: 0 !important; /* Убираем стандартные паддинги */
+    }
+  }
+  /* --- КОНЕЦ СТИЛЕЙ ДЛЯ АДАПТИВНОЙ ШАПКИ --- */
+  
+  
+  /* Адаптивность для заголовков и отступов на мобильных */
+  @media (max-width: 767px) {
+      h1, .ant-typography h1 { font-size: 2rem; }
+      h2, .ant-typography h2 { font-size: 1.5rem; }
+      h3, .ant-typography h3 { font-size: 1.25rem; }
+  
+      /* Уменьшаем вертикальные отступы секций на мобильных */
+      .section-padding {
+          /* Можно управлять padding-top/bottom здесь, если убрать inline-стили */
+          /* padding-top: 40px !important; */
+          /* padding-bottom: 40px !important; */
+      }
+  }
