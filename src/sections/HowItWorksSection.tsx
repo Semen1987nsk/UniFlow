@@ -1,6 +1,6 @@
 // src/sections/HowItWorksSection.tsx
 import React from 'react';
-import { Row, Col, Card, Typography, List } from 'antd';
+import { Row, Col, Card, Typography} from 'antd';
 // Убрали BulbOutlined, так как он не используется
 //import { CheckCircleTwoTone } from '@ant-design/icons'; // Оставляем только нужные
 
