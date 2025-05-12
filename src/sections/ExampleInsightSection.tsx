@@ -1,12 +1,11 @@
 // src/sections/ExampleInsightSection.tsx (Стильный текстовый вариант)
 import React from 'react';
-import { Row, Col, Typography, Card, Divider, Tag, Space } from 'antd';
+import {  Typography, Card, Divider } from 'antd';
 import {
     WarningFilled, // Для проблемы
     BarChartOutlined, // Для анализа
     BulbFilled, // Для рекомендации
-    ArrowRightOutlined, // Для пунктов анализа
-    RiseOutlined, // Для позитивного результата
+    ArrowRightOutlined, // Для пунктов анализа    
     FallOutlined // Для негативного аспекта
 } from '@ant-design/icons';
 
