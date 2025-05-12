@@ -16,7 +16,7 @@ const HeroSection: React.FC = () => {
               Прекратите терять деньги на эмоциях и догадках
             </Title>
             <Title level={3} style={{ color: '#475467', fontWeight: '400', marginBottom: '40px', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', lineHeight: '1.5' }}>
-              UniFlow — ваш персональный аналитик торговых сделок. Найдите скрытые ошибки, улучшите стратегию и торгуйте увереннее.
+              UniFlow — ваш удобный ТОРГОВЫЙ ДНЕВНИК сделок. Найдите скрытые ошибки, улучшите стратегию и торгуйте увереннее.
             </Title>
             <Button type="primary" size="large" href="#cta-form" style={{ padding: '0 32px', height: '48px', fontSize: '16px' }}>
               Получить ранний доступ 

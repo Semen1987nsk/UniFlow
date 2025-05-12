@@ -46,7 +46,7 @@ const insightIconStyle: React.CSSProperties = {
 const stepsData = [
     {
       key: '1',
-      title: 'Умный Анализ Данных',
+      title: 'Записывайте сделки в журнал',
       content: (
         <Paragraph type="secondary" style={{ textAlign: 'left' }}>
           Просто введите данные о сделке. UniFlow автоматически выявит скрытые закономерности, определит лучшие настройки риск-менеджмента, оптимальное время удержания и самые прибыльные для <Text strong>вас</Text> стратегии.

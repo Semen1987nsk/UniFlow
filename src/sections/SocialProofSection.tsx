@@ -47,7 +47,7 @@ const quoteCardStyle: React.CSSProperties = {
 const SocialProofSection: React.FC = () => {
   return (
     // Секция с белым фоном
-    <div className="section-padding social-proof-section" style={{ padding: '80px 0', backgroundColor: '#fff' }}>
+    <div className="section-padding social-proof-section" style={{ padding: '80px 0', backgroundColor: '#f8f9fa' }}>
       <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px' }}>
 
         {/* Вводный текст */}

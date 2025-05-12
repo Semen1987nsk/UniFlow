@@ -45,7 +45,7 @@ const SynergySection: React.FC = () => {
 
       <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px', position: 'relative', zIndex: 1 }}>
         <Title level={2} style={{ textAlign: 'center', marginBottom: '64px' /* Увеличим отступ */ }}>
-          Сила Дневника Сделок + Разум ИИ = Ваше Торговое Преимущество
+          
         </Title>
 
         {/* Используем Row с align="stretch", чтобы колонки растянулись по высоте */}
@@ -55,7 +55,7 @@ const SynergySection: React.FC = () => {
           <Col xs={24} md={10} style={{ display: 'flex' }}>
             <Card style={cardStyle}>
               <EditOutlined style={cardIconStyle} /> {/* Иконка редактирования/записи */}
-              <Title level={4} style={{ marginBottom: '16px' }}>Проверенный Фундамент</Title>
+              <Title level={4} style={{ marginBottom: '16px' }}>Торговый журнал сделок</Title>
               <Paragraph style={{ color: '#475467', flexGrow: 1 /* Растягиваем параграф */ }}>
                 Ведение торгового журнала — золотой стандарт дисциплины. Он помогает отслеживать сделки, анализировать базовые ошибки и формировать системный подход. Но ручной анализ требует времени и часто упускает скрытые детали.
               </Paragraph>
@@ -71,7 +71,7 @@ const SynergySection: React.FC = () => {
           <Col xs={24} md={10} style={{ display: 'flex' }}>
              <Card style={cardStyle}>
                <ThunderboltOutlined style={cardIconStyle} /> {/* Иконка молнии/ускорения/ИИ */}
-               <Title level={4} style={{ marginBottom: '16px' }}>Технологический Прорыв</Title>
+               <Title level={4} style={{ marginBottom: '16px' }}>Мощь искусственного интеллекта</Title>
                <Paragraph style={{ color: '#475467', flexGrow: 1 }}>
                  UniFlow усиливает дневник мощью ИИ. Наш алгоритм проникает глубже цифр, выявляя неочевидные закономерности в ваших действиях, эмоциях и рыночных условиях, которые невозможно заметить вручную.
                </Paragraph>
