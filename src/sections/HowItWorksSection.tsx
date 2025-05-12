@@ -1,8 +1,8 @@
 // src/sections/HowItWorksSection.tsx
 import React from 'react';
-import { Row, Col, Card, Typography,} from 'antd';
-// Убираем CheckCircleTwoTone, добавляем BulbOutlined
-import { BulbOutlined } from '@ant-design/icons';
+import { Row, Col, Card, Typography, List } from 'antd';
+// Убрали BulbOutlined, так как он не используется
+import { CheckCircleTwoTone } from '@ant-design/icons'; // Оставляем только нужные
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -12,7 +12,7 @@ const stepCardStyleMinimal: React.CSSProperties = {
     width: '100%',
     height: '100%',
     borderRadius: '16px',
-    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.04)',   // Тестовый комментарий для Git
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.04)',
     border: '1px solid #f0f0f0',
     padding: '32px 28px',
     position: 'relative',
@@ -34,19 +34,13 @@ const stepNumberLargeStyle: React.CSSProperties = {
     opacity: 0.9,
 };
 
-// Стиль для иконки инсайта в списке
-const insightIconStyle: React.CSSProperties = {
-    color: '#1890ff', // Синий цвет
-    marginRight: '10px',
-    fontSize: '16px', // Чуть крупнее маркера
-    verticalAlign: 'middle', // Выравнивание по центру строки
-};
+// УДАЛЕНА КОНСТАНТА insightIconStyle, так как она не используется
 
 // Данные шагов
 const stepsData = [
     {
       key: '1',
-      title: 'Записывайте сделки в журнал',
+      title: 'Записывайте сделки в журнал', // Ваш новый заголовок
       content: (
         <Paragraph type="secondary" style={{ textAlign: 'left' }}>
           Просто введите данные о сделке. UniFlow автоматически выявит скрытые закономерности, определит лучшие настройки риск-менеджмента, оптимальное время удержания и самые прибыльные для <Text strong>вас</Text> стратегии.
@@ -59,11 +53,23 @@ const stepsData = [
       content: (
         <>
           <Paragraph type="secondary" style={{ textAlign: 'left', marginBottom: '16px' }}>
-            Получайте конкретные советы, основанные на <Text strong>вашем</Text> уникальном стиле.
+            Получайте конкретные советы, основанные на <Text strong>вашем</Text> уникальном стиле:
           </Paragraph>
-          {/* Используем неупорядоченный список ul/li для семантики */}
-          
-          
+          {/* Используем List из Ant Design */}
+          <List size="small" style={{textAlign: 'left'}}>
+              <List.Item style={{borderBottom: 'none', padding: '4px 0'}}>
+                  <CheckCircleTwoTone twoToneColor="#52c41a" style={{marginRight: '8px'}}/>
+                  <Text>"Увеличьте TP на <Text strong>25%</Text> для 'Пробоя уровня' (упущено <Text strong>68%</Text> прибыли)."</Text>
+              </List.Item>
+              <List.Item style={{borderBottom: 'none', padding: '4px 0'}}>
+                  <CheckCircleTwoTone twoToneColor="#52c41a" style={{marginRight: '8px'}}/>
+                  <Text>"Сократите объем в <Text strong>14:00-15:30 МСК</Text> (<Text strong>83%</Text> убытков в это время)."</Text>
+              </List.Item>
+              <List.Item style={{borderBottom: 'none', padding: '4px 0'}}>
+                  <CheckCircleTwoTone twoToneColor="#52c41a" style={{marginRight: '8px'}}/>
+                  <Text>"Следуйте правилам 'Отбоя от EMA' (<Text strong>+37%</Text> к винрейту)."</Text>
+              </List.Item>
+          </List>
         </>
       )
     },
