@@ -53,7 +53,7 @@ const stepsData = [
       content: (
         <>
           <Paragraph type="secondary" style={{ textAlign: 'left', marginBottom: '16px' }}>
-            Получайте конкретные советы, основанные на <Text strong>вашем</Text> уникальном стиле:
+            Получайте конкретные советы, основанные на <Text strong>вашем</Text> уникальном стиле.
           </Paragraph>
          
         </>
