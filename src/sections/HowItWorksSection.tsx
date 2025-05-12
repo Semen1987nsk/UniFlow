@@ -59,29 +59,11 @@ const stepsData = [
       content: (
         <>
           <Paragraph type="secondary" style={{ textAlign: 'left', marginBottom: '16px' }}>
-            Получайте конкретные советы, основанные на <Text strong>вашем</Text> уникальном стиле:
+            Получайте конкретные советы, основанные на <Text strong>вашем</Text> уникальном стиле.
           </Paragraph>
           {/* Используем неупорядоченный список ul/li для семантики */}
-          <ul style={{ listStyle: 'none', paddingLeft: 0, textAlign: 'left' }}>
-              <li style={{ marginBottom: '10px' }}>
-                  <BulbOutlined style={insightIconStyle} />
-                  <Text>
-                      "Увеличьте TP на <Text strong>25%</Text> для 'Пробоя уровня' (упущено <Text strong>68%</Text> прибыли)."
-                  </Text>
-              </li>
-              <li style={{ marginBottom: '10px' }}>
-                  <BulbOutlined style={insightIconStyle} />
-                  <Text>
-                      "Сократите объем в <Text strong>14:00-15:30 МСК</Text> (<Text strong>83%</Text> убытков в это время)."
-                  </Text>
-              </li>
-              <li style={{ marginBottom: '10px' }}>
-                  <BulbOutlined style={insightIconStyle} />
-                  <Text>
-                      "Следуйте правилам 'Отбоя от EMA' (<Text strong>+37%</Text> к винрейту)."
-                  </Text>
-              </li>
-          </ul>
+          
+          
         </>
       )
     },
