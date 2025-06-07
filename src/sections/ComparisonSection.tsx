@@ -83,7 +83,7 @@ const tableItemAnimation: Variants = {
     transition: { duration: 0.4, ease: 'easeOut' },
   },
 };
-
+//
 
 const ComparisonSection: React.FC = () => {
   const controls = useAnimation();

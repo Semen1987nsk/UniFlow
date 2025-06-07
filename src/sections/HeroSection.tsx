@@ -1,6 +1,6 @@
 // src/sections/HeroSection.tsx
 import React, { useEffect } from 'react';
-import { Row, Col, Typography, Button, Space } from 'antd'; // Добавим Space для возможного использования
+import { Typography, Button } from 'antd'; // Добавим Space для возможного использования
 import { motion, useAnimation, Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ArrowRightOutlined } from '@ant-design/icons';
