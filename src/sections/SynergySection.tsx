@@ -69,7 +69,7 @@ const SynergySection: React.FC = () => {
       variants={sectionAnimation} // Используем variants для родителя
       className="section-padding synergy-section"
       style={{
-        padding: '100px 0',
+        //padding: '100px 0',
         position: 'relative', 
         overflow: 'hidden',
       }}

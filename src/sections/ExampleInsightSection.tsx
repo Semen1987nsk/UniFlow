@@ -61,7 +61,7 @@ const ExampleInsightSection: React.FC = () => {
       variants={sectionAppearAnimation}
       className="section-padding example-insight-section" // Класс для стилизации
       style={{ 
-        padding: '100px 0', 
+        //padding: '100px 0', 
         backgroundColor: '#0D1B2A', // Очень темный синий фон секции
         color: '#E0E6F0', // Светлый текст по умолчанию
       }}
