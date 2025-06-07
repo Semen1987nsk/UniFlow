@@ -1,90 +1,178 @@
 // src/sections/SynergySection.tsx
-import React from 'react';
-import { Row, Col, Typography, Card } from 'antd';
-// Более технологичные иконки + иконка плюса
-import {EditOutlined, PlusOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import React, { useEffect } from 'react';
+import { Typography, Card } from 'antd';
+import { EditOutlined, ThunderboltOutlined, PlusCircleFilled } from '@ant-design/icons';
+import { motion, useAnimation, Variants } from 'framer-motion'; // Добавили Variants для типизации
+import { useInView } from 'react-intersection-observer';
 
 const { Title, Paragraph } = Typography;
 
-const CONTENT_MAX_WIDTH = '1140px'; // Используем новую ширину
+const CONTENT_MAX_WIDTH = '1140px';
 
-// Стили для карточек
-const cardStyle: React.CSSProperties = {
-    width: '100%',
-    height: '100%', // Для выравнивания высоты
-    borderRadius: '16px', // Более скругленные углы
-    padding: '32px', // Увеличим внутренний отступ
-    boxShadow: '0 8px 25px rgba(0, 0, 0, 0.08)', // Чуть заметнее тень
-    border: 'none',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center', // Центрируем иконку и заголовок
-    textAlign: 'center', // Центрируем текст по умолчанию
+// Определяем варианты анимации более явно
+const sectionAnimation: Variants = {
+  hidden: { opacity: 0, y: 20 }, // Начинаем чуть ниже и невидимо
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+      when: "beforeChildren", // Анимация дочерних элементов начнется после родительской
+      staggerChildren: 0.2,  // Задержка между анимациями дочерних элементов
+    },
+  },
 };
 
-// Стили для иконок в карточках
-const cardIconStyle: React.CSSProperties = {
-    fontSize: '48px', // Крупнее иконка
-    color: '#1890ff',
-    marginBottom: '20px',  // Тестовый комментарий для Git
+// Общий вариант для дочерних элементов (карточек, текста)
+const itemAnimation: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
 };
+
 
 const SynergySection: React.FC = () => {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    triggerOnce: true, // Анимация сработает один раз
+    threshold: 0.15,   // Секция должна быть видна на 15% для запуска
+  });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start('visible');
+    } else {
+      controls.start('hidden'); // Если нужно, чтобы анимация повторялась при выходе из вида (убрать triggerOnce тогда)
+    }
+  }, [controls, inView]);
+
+  const cardBackgroundColor = '#1A202C'; 
+  const cardTextColor = '#E2E8F0';      
+  const cardTitleColor = '#FFFFFF';     
+  
+  const paragraphFontSize = '16px'; 
+  const paragraphLineHeight = '1.75';
+
+  const textShadowStyle: React.CSSProperties = {
+    textShadow: '0px 1px 2px rgba(0, 0, 0, 0.6)', // Тень для текста
+  };
+
   return (
-    // Используем градиентный фон или можно изображение
-    <div className="section-padding synergy-section" style={{
-        padding: '100px 0', // Увеличим вертикальные отступы
-        // Пример градиента (подберите цвета под ваш стиль)
-        background: 'linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%)',
-        overflow: 'hidden', // На случай вылезающих элементов
-        position: 'relative', // Для позиционирования плюса
-    }}>
-      {/* Можно добавить абстрактные фоновые элементы для стиля */}
-      {/* <div style={{ position: 'absolute', top: '10%', left: '5%', width: '100px', height: '100px', background: 'rgba(24, 144, 255, 0.05)', borderRadius: '50%', filter: 'blur(20px)' }}></div> */}
-      {/* <div style={{ position: 'absolute', bottom: '15%', right: '8%', width: '150px', height: '150px', background: 'rgba(82, 196, 26, 0.05)', borderRadius: '50%', filter: 'blur(30px)' }}></div> */}
+    <motion.div // Родительский motion.div для всей секции
+      ref={ref}
+      initial="hidden"
+      animate={controls} // Управляется через useInView
+      variants={sectionAnimation} // Используем variants для родителя
+      className="section-padding synergy-section"
+      style={{
+        padding: '100px 0',
+        position: 'relative', 
+        overflow: 'hidden',
+      }}
+    >
+      <div className="animated-gradient-bg"></div>
 
       <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px', position: 'relative', zIndex: 1 }}>
-        <Title level={2} style={{ textAlign: 'center', marginBottom: '64px' /* Увеличим отступ */ }}>
+        {/* Заголовок секции (дочерний элемент) */}
+        <motion.div variants={itemAnimation}> 
+          <Title level={2} style={{ textAlign: 'center', marginBottom: '64px', color: cardTitleColor, ...textShadowStyle }}>
+            Синергия <span style={{color: '#85d8ff'}}>Дисциплины</span> и <span style={{color: '#c06fff'}}>Интеллекта</span>
+          </Title>
+        </motion.div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '30px' }}>
+          <div 
+            className="synergy-cards-container"
+          >
+            {/* Карточка 1 (дочерний элемент) */}
+            <motion.div variants={itemAnimation} className="synergy-card-wrapper">
+              <Card
+                bordered={false}
+                className="synergy-custom-card" 
+                style={{
+                  height: '100%',
+                  borderRadius: '20px',
+                  padding: '35px', 
+                  backgroundColor: cardBackgroundColor, 
+                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)', 
+                  textAlign: 'center',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                }}
+              >
+                <EditOutlined style={{ fontSize: '48px', color: '#85d8ff', marginBottom: '20px' }} />
+                <Title level={3} style={{ marginBottom: '18px', color: cardTitleColor, ...textShadowStyle }}>
+                    Торговый Журнал
+                </Title>
+                <Paragraph style={{ color: cardTextColor, fontSize: paragraphFontSize, lineHeight: paragraphLineHeight, ...textShadowStyle }}>
+                  Основа дисциплины. Помогает отслеживать сделки, выявлять базовые ошибки и формировать системный подход. Но ручной анализ трудоемок и часто упускает неочевидные детали.
+                </Paragraph>
+              </Card>
+            </motion.div>
+
+            {/* Плюс (дочерний элемент) */}
+            <motion.div variants={itemAnimation} className="synergy-plus-icon-wrapper">
+               <PlusCircleFilled style={{ fontSize: '56px', color: 'rgba(255, 255, 255, 0.85)', filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.4))' }} />
+            </motion.div>
+
+            {/* Карточка 2 (дочерний элемент) */}
+            <motion.div variants={itemAnimation} className="synergy-card-wrapper">
+               <Card
+                bordered={false}
+                className="synergy-custom-card"
+                style={{
+                  height: '100%',
+                  borderRadius: '20px',
+                  padding: '35px',
+                  backgroundColor: cardBackgroundColor, 
+                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
+                  textAlign: 'center',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                }}
+              >
+                <ThunderboltOutlined style={{ fontSize: '48px', color: '#c06fff', marginBottom: '20px' }} />
+                <Title level={3} style={{ marginBottom: '18px', color: cardTitleColor, ...textShadowStyle }}>
+                    Аналитика ИИ
+                </Title>
+                <Paragraph style={{ color: cardTextColor, fontSize: paragraphFontSize, lineHeight: paragraphLineHeight, ...textShadowStyle }}>
+                  Усиливает дневник мощью искусственного интеллекта. Алгоритмы UniFlow проникают глубже цифр, выявляя скрытые закономерности в ваших действиях, эмоциях и рыночных условиях.
+                </Paragraph>
+              </Card>
+            </motion.div>
+          </div>
           
-        </Title>
-
-        {/* Используем Row с align="stretch", чтобы колонки растянулись по высоте */}
-        <Row gutter={[40, 40]} justify="center" align="stretch">
-
-          {/* Левая Колонка: Ценность Дневника */}
-          <Col xs={24} md={10} style={{ display: 'flex' }}>
-            <Card style={cardStyle}>
-              <EditOutlined style={cardIconStyle} /> {/* Иконка редактирования/записи */}
-              <Title level={4} style={{ marginBottom: '16px' }}>Торговый журнал сделок</Title>
-              <Paragraph style={{ color: '#475467', flexGrow: 1 /* Растягиваем параграф */ }}>
-                Ведение торгового журнала — золотой стандарт дисциплины. Он помогает отслеживать сделки, анализировать базовые ошибки и формировать системный подход. Но ручной анализ требует времени и часто упускает скрытые детали.
-              </Paragraph>
-            </Card>
-          </Col>
-
-          {/* Иконка Плюса между колонками (видна на md и выше) */}
-          <Col xs={0} md={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-             <PlusOutlined style={{ fontSize: '40px', color: '#bfbfbf' }} />
-          </Col>
-
-          {/* Правая Колонка: Мощь ИИ UniFlow */}
-          <Col xs={24} md={10} style={{ display: 'flex' }}>
-             <Card style={cardStyle}>
-               <ThunderboltOutlined style={cardIconStyle} /> {/* Иконка молнии/ускорения/ИИ */}
-               <Title level={4} style={{ marginBottom: '16px' }}>Мощь искусственного интеллекта</Title>
-               <Paragraph style={{ color: '#475467', flexGrow: 1 }}>
-                 UniFlow усиливает дневник мощью ИИ. Наш алгоритм проникает глубже цифр, выявляя неочевидные закономерности в ваших действиях, эмоциях и рыночных условиях, которые невозможно заметить вручную.
-               </Paragraph>
-             </Card>
-          </Col>
-        </Row>
-
-        {/* Объединяющий Вывод */}
-        <Paragraph style={{ textAlign: 'center', marginTop: '64px', fontSize: '18px', fontWeight: 500, maxWidth: '800px', margin: '64px auto 0 auto' }}>
-          <span style={{ color: '#1890ff' }}>Результат?</span> Не просто записи, а <span style={{ fontWeight: 600 }}>персональная дорожная карта</span> к стабильной прибыли, основанная на глубоком понимании <span style={{ fontStyle: 'italic' }}>вашего</span> уникального стиля торговли и объективных данных.
-        </Paragraph>
+          {/* Заключительный текст (дочерний элемент) */}
+          <motion.div variants={itemAnimation}> 
+            <Paragraph 
+              style={{ 
+                textAlign: 'center', 
+                marginTop: '64px', 
+                fontSize: '18px', 
+                fontWeight: 500, 
+                maxWidth: '800px', 
+                margin: '64px auto 0 auto', 
+                color: cardTextColor, 
+                lineHeight: '1.75',
+                ...textShadowStyle
+              }}
+            >
+              <span style={{ 
+                  background: 'linear-gradient(90deg, #85d8ff, #c06fff)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  fontWeight: 700,
+                  fontSize: '20px',
+                }}>
+                UniFlow Результат:
+              </span><br/> Не просто записи, а ваша <strong style={{color: cardTitleColor, fontWeight: 600, ...textShadowStyle}}>персональная дорожная карта</strong> к стабильной прибыли, основанная на глубоком понимании вашего уникального стиля торговли и объективных данных.
+            </Paragraph>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

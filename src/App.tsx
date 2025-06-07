@@ -7,17 +7,13 @@ import './App.css';
 import HeaderSection from './sections/HeaderSection.tsx';
 import HeroSection from './sections/HeroSection.tsx';
 import SocialProofSection from './sections/SocialProofSection.tsx';
-import SynergySection from './sections/SynergySection.tsx'; // <-- Добавлен импорт
-import ExampleInsightSection from './sections/ExampleInsightSection.tsx';  // Тестовый комментарий для Git
+import SynergySection from './sections/SynergySection.tsx'; 
+import ExampleInsightSection from './sections/ExampleInsightSection.tsx'; 
 import HowItWorksSection from './sections/HowItWorksSection.tsx';
-import ProblemSection from './sections/ProblemSection.tsx';
-//import SolutionSection from './sections/SolutionSection.tsx';
-
 import FeaturesSection from './sections/FeaturesSection.tsx';
+import PricingSection from './sections/PricingSection.tsx';
 import ComparisonSection from './sections/ComparisonSection.tsx';
-
 import IntegrationsSection from './sections/IntegrationsSection.tsx';
-import FaqSection from './sections/FaqSection.tsx';
 import CtaSection from './sections/CtaSection.tsx';
 import FooterSection from './sections/FooterSection.tsx';
 
@@ -30,14 +26,14 @@ function App() {
       <Content>
         <HeroSection />
         <SocialProofSection />
-        <SynergySection /> {/* <-- Добавлен рендеринг компонента */}
+        <SynergySection /> 
         <ExampleInsightSection />
         <HowItWorksSection />
-        <ProblemSection />       
+        {/* <ProblemSection /> */} {/* <<< УДАЛЕНО */}      
         <FeaturesSection />
+        <PricingSection />
         <ComparisonSection />       
         <IntegrationsSection />
-        <FaqSection />
         <CtaSection />
       </Content>
       <FooterSection />

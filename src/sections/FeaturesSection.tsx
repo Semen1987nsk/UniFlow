@@ -1,11 +1,19 @@
 // src/sections/FeaturesSection.tsx
-import React from 'react';
-import { Row, Col, Card, Typography } from 'antd';
-import { LineChartOutlined, ExperimentOutlined, SafetyCertificateOutlined, BulbOutlined, SolutionOutlined, BarChartOutlined } from '@ant-design/icons';
+import React, { useEffect } from 'react';
+import { Row, Col, Typography } from 'antd';
+import { 
+    LineChartOutlined, 
+    ExperimentOutlined, 
+    SafetyCertificateOutlined, 
+    BulbOutlined, 
+    SolutionOutlined, 
+    BarChartOutlined 
+} from '@ant-design/icons';
+import { motion, useAnimation, Variants } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const { Title, Paragraph } = Typography;
 
-// Максимальная ширина контента
 const CONTENT_MAX_WIDTH = '1140px';
 
 interface Feature {
@@ -14,42 +22,90 @@ interface Feature {
   description: string;
 }
 
-const iconColor = '#1890ff';
-const iconStyle: React.CSSProperties = { fontSize: '42px', color: iconColor };
+// Иконки будут стилизоваться через CSS классы или более сложные inline-стили внутри map
+const baseIconStyle: React.CSSProperties = { fontSize: '48px' }; // Базовый размер
 
 const featuresData: Feature[] = [
-  { icon: <BarChartOutlined style={iconStyle} />, title: 'Глубокий Анализ Сделок', description: 'Выявляйте скрытые закономерности и понимайте реальные причины ваших прибылей и убытков.' },
-  { icon: <ExperimentOutlined style={iconStyle} />, title: 'Оценка Стратегий', description: 'Узнайте, какие торговые сетапы и стратегии действительно работают конкретно для вас.' },
-  { icon: <SafetyCertificateOutlined style={iconStyle} />, title: 'Анализ Риск-Менеджмента', description: 'Оптимизируйте размер позиций, стоп-лоссы и соотношение риска к прибыли для стабильного роста.' },
-  { icon: <SolutionOutlined style={iconStyle} />, title: 'Поведенческие Паттерны', description: 'Обнаруживайте влияние эмоций (FOMO, FUD) на ваши решения и учитесь их контролировать.' },
-  { icon: <BulbOutlined style={iconStyle} />, title: 'Персональные Рекомендации', description: 'Получайте конкретные, основанные на данных советы, адаптированные под ваш уникальный стиль торговли.' },
-  { icon: <LineChartOutlined style={iconStyle} />, title: 'Наглядная Статистика', description: 'Отслеживайте свой прогресс с помощью понятных графиков и ключевых метрик эффективности.' },
+  { icon: <BarChartOutlined style={baseIconStyle} />, title: 'Глубокий Анализ Сделок', description: 'Выявляйте скрытые закономерности и понимайте реальные причины ваших прибылей и убытков.' },
+  { icon: <ExperimentOutlined style={baseIconStyle} />, title: 'Оценка Стратегий', description: 'Узнайте, какие торговые сетапы и стратегии действительно работают конкретно для вас.' },
+  { icon: <SafetyCertificateOutlined style={baseIconStyle} />, title: 'Анализ Риск-Менеджмента', description: 'Оптимизируйте размер позиций, стоп-лоссы и соотношение риска к прибыли для стабильного роста.' },
+  { icon: <SolutionOutlined style={baseIconStyle} />, title: 'Поведенческие Паттерны', description: 'Обнаруживайте влияние эмоций (FOMO, FUD) на ваши решения и учитесь их контролировать.' },
+  { icon: <BulbOutlined style={baseIconStyle} />, title: 'Персональные Рекомендации', description: 'Получайте конкретные, основанные на данных советы, адаптированные под ваш уникальный стиль торговли.' },
+  { icon: <LineChartOutlined style={baseIconStyle} />, title: 'Наглядная Статистика', description: 'Отслеживайте свой прогресс с помощью понятных графиков и ключевых метрик эффективности.' },
 ];
 
+// Анимации Framer Motion
+const sectionAnimation: Variants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1, 
+    transition: { duration: 0.5, when: "beforeChildren", staggerChildren: 0.15 } 
+  },
+};
+
+const cardAnimation: Variants = {
+  hidden: { opacity: 0, y: 60, scale: 0.9 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } // Более "упругий" ease
+  },
+};
+
 const FeaturesSection: React.FC = () => {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1, // 10% секции видно для старта анимации
+  });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start('visible');
+    }
+  }, [controls, inView]);
+
   return (
-    // Внешний div
-    <div className="section-padding features-section-outer" style={{ padding: '80px 0', backgroundColor: '#f8f9fa' }}>
-       {/* Внутренний div */}
-       <div className="features-section-inner" style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px' }}>
-        <Title level={2} style={{ textAlign: 'center', marginBottom: '56px' }}>
-          Раскройте Весь Потенциал UniFlow
-        </Title>
-        <Row gutter={[32, 32]} justify="center">
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={sectionAnimation}
+      className="section-padding features-section-reimagined" // Новый класс для секции
+      // Стиль фона будет в App.css
+    >
+      <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px', position: 'relative', zIndex: 1 }}>
+        <motion.div variants={cardAnimation}> {/* Анимация для заголовка */}
+          <Title level={2} style={{ textAlign: 'center', marginBottom: '64px', color: '#FFFFFF' }}>
+            Раскройте Весь Потенциал <span className="features-title-highlight">UniFlow</span>
+          </Title>
+        </motion.div>
+
+        <Row gutter={[36, 36]} justify="center"> {/* Увеличил gutter */}
           {featuresData.map((feature, index) => (
             <Col key={index} xs={24} sm={12} lg={8} style={{ display: 'flex' }}>
-              <Card bordered={false} style={{ width: '100%', height: '100%', textAlign: 'center', borderRadius: '12px', boxShadow: '0 5px 20px rgba(16, 24, 40, 0.05)' }} className="feature-card">
-                <div className="feature-icon" style={{ marginBottom: '16px' }}>
+              <motion.div
+                variants={cardAnimation}
+                className="feature-card-reimagined" // Класс для новой карточки
+                whileHover={{ 
+                  y: -10, 
+                  scale: 1.03,
+                  boxShadow: "0px 20px 40px rgba(56, 189, 248, 0.25), 0px 0px 100px rgba(56, 189, 248, 0.1)", // Усиленное свечение
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              >
+                <div className="feature-card-icon-container">
                   {feature.icon}
                 </div>
-                <Title level={4} style={{ marginBottom: '8px' }}>{feature.title}</Title>
-                <Paragraph style={{color: '#475467'}}>{feature.description}</Paragraph>
-              </Card>
+                <Title level={4} className="feature-card-title">{feature.title}</Title>
+                <Paragraph className="feature-card-description">{feature.description}</Paragraph>
+              </motion.div>
             </Col>
           ))}
         </Row>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

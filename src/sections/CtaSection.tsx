@@ -1,127 +1,180 @@
-// src/sections/CtaSection.tsx (Чистая интеграция с @formspree/react)
-import React from 'react';
-import { Typography, Button, Input, Radio, Result, Space } from 'antd'; // Убрали Form
-import { CheckCircleOutlined, LoadingOutlined, CloseCircleOutlined } from '@ant-design/icons';
+// src/sections/CtaSection.tsx
+import React, { useEffect, useState } from 'react';
+import { Typography, Button, Input, Radio, Result, Space, Checkbox } from 'antd';
+import { CheckCircleOutlined, LoadingOutlined, CloseCircleOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
 import { useForm, ValidationError } from '@formspree/react';
+import { motion, useAnimation, Variants } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const { Title, Paragraph, Text } = Typography;
 
-const CONTENT_MAX_WIDTH = '800px';
+const CONTENT_MAX_WIDTH = '700px';
 const FORM_ID = "mqaprvpr"; // Ваш ID
+
+// Анимации
+const sectionAnimation: Variants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: "easeOut", staggerChildren: 0.2 }
+  },
+};
+
+const itemAnimation: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" }
+  },
+};
+
 
 const CtaSection: React.FC = () => {
     const [state, handleSubmit] = useForm(FORM_ID);
+    const controls = useAnimation();
+    const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
+    const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
-    // --- Отображение успеха ---
+    useEffect(() => {
+      if (inView) controls.start('visible');
+    }, [controls, inView]);
+
     if (state.succeeded) {
         return (
-            <div id="cta-form" className="section-padding cta-section" style={{ padding: '100px 0', backgroundColor: '#1890ff', color: '#fff' }}>
-                <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px', textAlign: 'center' }}>
+            <motion.div
+              id="cta-form"
+              className="section-padding cta-section-v2 success-state"
+              initial="hidden"
+              animate="visible"
+              variants={sectionAnimation}
+            >
+                <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '40px 20px', textAlign: 'center' }}>
                     <Result
-                      icon={<CheckCircleOutlined style={{ color: '#52c41a' }} />}
-                      title={<Title level={3} style={{ color: '#fff' }}>Спасибо за ваш интерес!</Title>}
+                      icon={<CheckCircleOutlined className="cta-success-icon" />}
+                      title={<Title level={3} className="cta-success-title">Спасибо за регистрацию!</Title>}
                       subTitle={
-                          <Paragraph style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.9)' }}>
-                              Мы получили ваши данные и сообщим вам о запуске UniFlow.<br/>
-                              Ориентировочная дата запуска — <Text strong style={{ color: '#fff' }}>6 июля</Text>.
+                          <Paragraph className="cta-success-subtitle">
+                              Мы рады видеть вас в UniFlow. Ожидайте уведомление о запуске и дальнейшие инструкции.
+                              Ориентировочная дата запуска — <Text strong style={{ color: 'inherit' }}>6 июля</Text>.
                           </Paragraph>
                       }
                     />
                 </div>
-            </div>
+            </motion.div>
         );
     }
 
-    // --- Отображение формы ---
     return (
-        <div id="cta-form" className="section-padding cta-section" style={{ padding: '100px 0', backgroundColor: '#1890ff', color: '#fff' }}>
-          <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px', textAlign: 'center' }}>
-            <Title level={2} style={{ color: '#fff', marginBottom: '20px' }}>Готовы улучшить свою торговлю?</Title>
-            <Paragraph style={{ fontSize: '18px', marginBottom: '40px', color: 'rgba(255, 255, 255, 0.9)' }}>
-              Оставьте свои данные, чтобы получить уведомление о запуске UniFlow одним из первых и <Text strong style={{ color: '#fff' }}>специальную скидку 30%</Text> на подписку!
-            </Paragraph>
+        <motion.div
+          id="cta-form"
+          ref={ref}
+          initial="hidden"
+          animate={controls}
+          variants={sectionAnimation}
+          className="section-padding cta-section-v2"
+        >
+          <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+            <motion.div variants={itemAnimation}>
+              <Title level={2} className="cta-main-title-v2">
+                Начните Трансформировать Свою Торговлю <span className="cta-title-highlight-v2">Уже Сегодня</span>
+              </Title>
+              <Paragraph className="cta-subtitle-v2">
+                Присоединяйтесь к UniFlow и откройте для себя мощь ИИ-аналитики для ваших сделок.
+              </Paragraph>
+            </motion.div>
 
-            {/* Используем обычный тег <form> с onSubmit от Formspree */}
-            <form onSubmit={handleSubmit} style={{ maxWidth: '550px', margin: '0 auto' }}>
-
-              {/* Поле Имя (Используем Input от AntD) */}
-              <div style={{ marginBottom: '16px' }}>
+            <motion.form
+              variants={itemAnimation}
+              onSubmit={handleSubmit}
+              className="cta-form-v2"
+            >
+              <motion.div variants={itemAnimation} className="cta-form-item-v2">
                 <Input
-                  id="cta-name" // Добавляем id для label (если бы он был)
-                  name="name"   // Имя поля для Formspree
+                  id="cta-name"
+                  name="name"
                   size="large"
                   placeholder="Ваше Имя"
-                  required // Базовая HTML5 валидация
-                  style={{ textAlign: 'center', height: '48px', fontSize: '16px', width: '100%' }}
+                  prefix={<UserOutlined className="cta-input-icon"/>}
+                  required
                 />
-                 {/* Ошибка для поля name от Formspree */}
-                 <ValidationError prefix="Name" field="name" errors={state.errors} style={{ color: '#ff4d4f', textAlign: 'left', marginTop: '4px', display: 'block' }}/>
-              </div>
+                 <ValidationError prefix="Name" field="name" errors={state.errors} className="cta-validation-error"/>
+              </motion.div>
 
-              {/* Поле Email (Используем Input от AntD) */}
-              <div style={{ marginBottom: '16px' }}>
+              <motion.div variants={itemAnimation} className="cta-form-item-v2">
                 <Input
                   id="cta-email"
-                  type="email" // HTML5 валидация типа email
+                  type="email"
                   name="email"
                   size="large"
                   placeholder="Ваш E-mail"
+                  prefix={<MailOutlined className="cta-input-icon"/>}
                   required
-                  style={{ textAlign: 'center', height: '48px', fontSize: '16px', width: '100%' }}
                 />
-                 {/* Ошибка для поля email от Formspree */}
-                <ValidationError prefix="Email" field="email" errors={state.errors} style={{ color: '#ff4d4f', textAlign: 'left', marginTop: '4px', display: 'block' }}/>
-              </div>
+                <ValidationError prefix="Email" field="email" errors={state.errors} className="cta-validation-error"/>
+              </motion.div>
 
-              {/* Выбор Трейдер/Инвестор (Используем Radio.Group от AntD) */}
-              <div style={{ marginBottom: '24px' }}>
-                 {/* Добавляем label вручную */}
-                 <label htmlFor="user_type_radio_group" style={{ display: 'block', marginBottom: '8px', color: 'rgba(255, 255, 255, 0.8)' }}>Кто вы?</label>
-                 {/* Оборачиваем Radio.Group, чтобы применить id */}
-                 <div id="user_type_radio_group">
-                    <Radio.Group
-                        name="user_type" // Имя поля для Formspree
-                        optionType="button"
-                        buttonStyle="solid"
-                        // required // Для Radio.Group required не работает стандартно, валидация будет на сервере
-                    >
-                      <Radio value="Trader" style={{ color: '#333' }}>Трейдер</Radio>
-                      <Radio value="Investor" style={{ color: '#333' }}>Инвестор</Radio>
+              <motion.div variants={itemAnimation} className="cta-form-item-v2 user-type-selection">
+                 <label htmlFor="user_type_radio_group_v2" className="cta-radio-label">Кто вы?</label>
+                 <div id="user_type_radio_group_v2">
+                    <Radio.Group name="user_type" optionType="button" buttonStyle="solid" defaultValue="Trader">
+                      <Radio value="Trader">Трейдер</Radio>
+                      <Radio value="Investor">Инвестор</Radio>
                     </Radio.Group>
                  </div>
-                 {/* Ошибка для поля user_type от Formspree */}
-                 <ValidationError prefix="User Type" field="user_type" errors={state.errors} style={{ color: '#ff4d4f', textAlign: 'left', marginTop: '4px', display: 'block' }}/>
-              </div>
+                 <ValidationError prefix="User Type" field="user_type" errors={state.errors} className="cta-validation-error"/>
+              </motion.div>
 
-              {/* Кнопка отправки (Используем Button от AntD) */}
-              <div style={{ marginBottom: '16px' }}>
+              <motion.div variants={itemAnimation} className="cta-form-item-v2 cta-privacy-checkbox-wrapper">
+                <Checkbox
+                    id="cta-privacy"
+                    checked={privacyAccepted}
+                    onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                >
+                    <Text className="cta-privacy-text">
+                        Я даю согласие на обработку моих персональных данных в соответствии с 
+                        {/* ИЗМЕНЕНИЕ ЗДЕСЬ: */}
+                        <a 
+                            href="https://politics2025.tilda.ws/" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="cta-privacy-link"
+                        >
+                            Политикой конфиденциальности
+                        </a>.
+                    </Text>
+                </Checkbox>
+              </motion.div>
+
+              <motion.div variants={itemAnimation} className="cta-form-item-v2">
                 <Button
                   type="primary"
-                  danger
-                  htmlType="submit" // Отправляет форму, вызывает onSubmit={handleSubmit}
+                  htmlType="submit"
                   size="large"
                   block
-                  disabled={state.submitting}
+                  className="cta-submit-button-v2"
+                  disabled={!privacyAccepted || state.submitting}
                   icon={state.submitting ? <LoadingOutlined /> : null}
-                  style={{ height: '48px', fontSize: '16px' }}
                 >
-                  {state.submitting ? 'Отправка...' : 'Хочу Ранний Доступ!'}
+                  {state.submitting ? 'Отправка...' : 'Зарегистрироваться'}
                 </Button>
-              </div>
+              </motion.div>
 
-              {/* Общая ошибка формы от Formspree */}
               {state.errors && state.errors.getFormErrors().length > 0 && (
-                 <div style={{ color: '#ff4d4f', textAlign: 'left', marginTop: '8px' }}>
+                 <motion.div variants={itemAnimation} className="cta-form-general-error">
                    <Space><CloseCircleOutlined /> Ошибка отправки:</Space> {state.errors.getFormErrors().map(e => e.message).join(', ')}
-                 </div>
+                 </motion.div>
               )}
-            </form>
+            </motion.form>
 
-            <Paragraph style={{ marginTop: '20px', fontSize: '13px', color: 'rgba(255, 255, 255, 0.7)' }}>
-                Никакого спама, только уведомление о запуске и полезные материалы.
-            </Paragraph>
+            <motion.div variants={itemAnimation}>
+                <Paragraph className="cta-spam-notice-v2">
+                    ПОСЛЕ РЕГИСТРАЦИИ ВАМ БУДЕТ ДОСТУПНО МОБИЛЬНОЕ ПРИЛОЖЕНИЕ И ВЭБ-ВЕРСИЯ СЕРВИСА.
+                </Paragraph>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
     );
 };
 

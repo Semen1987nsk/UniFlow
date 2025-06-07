@@ -1,100 +1,154 @@
 // src/sections/HowItWorksSection.tsx
-import React from 'react';
-import { Row, Col, Card, Typography} from 'antd';
-// Убрали BulbOutlined, так как он не используется
-//import { CheckCircleTwoTone } from '@ant-design/icons'; // Оставляем только нужные
+import React, { useEffect } from 'react';
+import { Typography, Row, Col } from 'antd';
+import { motion, useAnimation, Variants } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import CountUp from 'react-countup';
 
 const { Title, Paragraph, Text } = Typography;
 
 const CONTENT_MAX_WIDTH = '1140px';
 
-const stepCardStyleMinimal: React.CSSProperties = {
-    width: '100%',
-    height: '100%',
-    borderRadius: '16px',
-    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.04)',
-    border: '1px solid #f0f0f0',
-    padding: '32px 28px',
-    position: 'relative',
-    overflow: 'hidden',
-    display: 'flex',
-    flexDirection: 'column',
-    background: '#fff',
+const itemAppearAnimation: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
 };
 
-const stepNumberLargeStyle: React.CSSProperties = {
-    position: 'absolute',
-    top: '20px',
-    left: '28px',
-    fontSize: '64px',
-    fontWeight: 700,
-    color: '#1890ff',
-    lineHeight: 1,
-    zIndex: 1,
-    opacity: 0.9,
+interface MetricCardProps {
+  title: string;
+  valuePrefix?: string;
+  value?: number; 
+  valueString?: string; 
+  valueSuffix?: string;
+  decimals?: number;
+  description: string;
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({ title, valuePrefix = "", value, valueString, valueSuffix = "", decimals = 0, description }) => {
+  const cardControls = useAnimation();
+  const [countUpRef, countUpInView] = useInView({ 
+    triggerOnce: true, 
+    threshold: 0.5 
+  }); 
+  const [motionRef, motionInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
+
+  useEffect(() => {
+    if (motionInView) {
+      cardControls.start('visible');
+    }
+  }, [cardControls, motionInView]);
+
+  return (
+    <motion.div
+      ref={motionRef}
+      initial="hidden"
+      animate={cardControls}
+      variants={itemAppearAnimation}
+      className="metric-card"
+      style={{ width: '100%', height: '100%' }}
+    >
+      <Title level={4} className="metric-card-title">{title}</Title>
+      <div className="metric-card-value" ref={countUpRef}> 
+        {valuePrefix}
+        {value !== undefined && countUpInView ? (
+          <CountUp start={0} end={value} duration={2.5} decimals={decimals} separator=" " />
+        ) : valueString ? (
+          valueString
+        ) : value !== undefined ? (
+           (0).toFixed(decimals) 
+        ) : (
+          '-'
+        )}
+        {valueSuffix}
+      </div>
+      <Paragraph className="metric-card-description">{description}</Paragraph>
+    </motion.div>
+  );
 };
 
-// УДАЛЕНА КОНСТАНТА insightIconStyle, так как она не используется
-
-// Данные шагов
-const stepsData = [
+const metricsData: MetricCardProps[] = [
     {
-      key: '1',
-      title: 'Записывайте сделки в журнал', // Ваш новый заголовок
-      content: (
-        <Paragraph type="secondary" style={{ textAlign: 'left' }}>
-          Просто введите данные о сделке. UniFlow автоматически выявит скрытые закономерности, определит лучшие настройки риск-менеджмента, оптимальное время удержания и самые прибыльные для <Text strong>вас</Text> стратегии.
-        </Paragraph>
-      )
+      title: 'Процент Прибыльных Сделок',
+      value: 62,
+      valueSuffix: '%',
+      description: 'Узнайте, как часто ваши сделки закрываются в плюс. UniFlow поможет выявить закономерности, повышающие этот показатель.',
     },
     {
-      key: '2',
-      title: 'Персональные Рекомендации',
-      content: (
-        <>
-          <Paragraph type="secondary" style={{ textAlign: 'left', marginBottom: '16px' }}>
-            Получайте конкретные советы, основанные на <Text strong>вашем</Text> уникальном стиле.
-          </Paragraph>
-         
-        </>
-      )
+      title: 'Коэффициент Прибыльности',
+      value: 2.15,
+      decimals: 2,
+      description: 'Оцените эффективность вашей торговли: сколько вы зарабатываете на каждый доллар риска. UniFlow подскажет, как оптимизировать это соотношение.',
     },
     {
-      key: '3',
-      title: 'Контроль Эмоций',
-      content: (
-         <Paragraph type="secondary" style={{ textAlign: 'left' }}>
-           UniFlow выявляет влияние эмоциональных триггеров на ваши решения. Анализ комментариев и результатов поможет трансформировать деструктивные паттерны в осознанную, дисциплинированную торговлю.
-        </Paragraph>
-      )
+      title: 'Коэффициент Шарпа', // Новая метрика
+      value: 1.25,              // Пример значения
+      decimals: 2,              // Количество знаков после запятой
+      description: 'Оцените доходность вашей стратегии с поправкой на риск. Чем выше коэффициент Шарпа, тем лучше ваша отдача на единицу принятого риска. UniFlow поможет отслеживать и улучшать этот показатель.',
     }
 ];
 
 
 const HowItWorksSection: React.FC = () => {
+  const sectionControls = useAnimation();
+  const [sectionRef, sectionInView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1, 
+  });
+
+  useEffect(() => {
+    if (sectionInView) {
+      sectionControls.start('visible');
+    } else {
+      sectionControls.start('hidden'); 
+    }
+  }, [sectionControls, sectionInView]);
+
   return (
-    <div className="section-padding how-it-works-section" style={{ padding: '80px 0', backgroundColor: '#f8f9fa' }}>
-      <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px' }}>
-        <Title level={2} style={{ textAlign: 'center', marginBottom: '64px' }}>
-          Как UniFlow Превращает Данные в Прибыль?
-        </Title>
+    <motion.div 
+      ref={sectionRef}
+      initial="hidden"
+      animate={sectionControls}
+      variants={{
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 0.5 } } 
+      }}
+      className="section-padding how-it-works-reimagined-section"
+      style={{
+        padding: '100px 0',
+      }}
+    >
+      <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px', position: 'relative', zIndex: 1 }}>
+        <motion.div initial="hidden" animate={sectionControls} variants={itemAppearAnimation} transition={{delay: 0.1}}>
+          <Title level={2} style={{ textAlign: 'center', marginBottom: '24px', color: '#FFFFFF' }}>
+            Полезная Статистика Сделок
+          </Title>
+          <Paragraph style={{ textAlign: 'center', fontSize: '18px', color: '#A0AEC0', marginBottom: '64px', maxWidth: '750px', margin: '0 auto 64px auto' }}>
+            UniFlow превращает ваш торговый журнал в мощный инструмент анализа, предоставляя наглядную статистику, которая помогает понять сильные и слабые стороны вашей стратегии.
+          </Paragraph>
+        </motion.div>
+
         <Row gutter={[32, 32]} justify="center" align="stretch">
-          {stepsData.map((step, index) => (
-            <Col key={step.key} xs={24} sm={12} md={8} style={{ display: 'flex' }}>
-              <Card style={stepCardStyleMinimal}>
-                 <div style={stepNumberLargeStyle}>0{index + 1}</div>
-                 <div style={{ paddingTop: '60px', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
-                    <Title level={4} style={{ marginBottom: '16px', textAlign: 'left' }}>{step.title}</Title>
-                    <div style={{ flexGrow: 1 }}>
-                         {step.content}
-                    </div>
-                 </div>
-              </Card>
+          {metricsData.map((metric, index) => (
+            <Col key={index} xs={24} sm={12} md={8} style={{ display: 'flex' }}>
+                 <MetricCard {...metric} /> 
             </Col>
           ))}
         </Row>
+        
+        <motion.div initial="hidden" animate={sectionControls} variants={itemAppearAnimation} transition={{delay: 0.3}}>
+            <Paragraph style={{ textAlign: 'center', marginTop: '64px', fontSize: '17px', fontWeight: 400, maxWidth: '750px', margin: '64px auto 0 auto', color: '#CBD5E1' }}>
+                Это лишь некоторые из метрик, которые UniFlow анализирует для вас. Начните вести журнал сегодня, чтобы превратить сухие цифры в реальные улучшения и <Text strong style={{color: '#86EFAC'}}>стабильную прибыль!</Text>
+            </Paragraph>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

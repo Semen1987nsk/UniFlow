@@ -1,106 +1,155 @@
-// src/sections/ExampleInsightSection.tsx (Стильный текстовый вариант)
-import React from 'react';
-import {  Typography, Card, Divider } from 'antd';
+// src/sections/ExampleInsightSection.tsx
+import React, { useEffect } from 'react';
+import { Typography } from 'antd'; // Убрали Card и Divider, будем делать кастомно
 import {
-    WarningFilled, // Для проблемы
-    BarChartOutlined, // Для анализа
-    BulbFilled, // Для рекомендации
-    ArrowRightOutlined, // Для пунктов анализа    
-    FallOutlined // Для негативного аспекта
+    WarningTwoTone,     // Для проблемы (двухцветная для акцента)
+    FundProjectionScreenOutlined, // Для анализа (более технологичная)
+    BulbTwoTone,          // Для рекомендации (двухцветная)
+    ArrowRightOutlined,   // Для пунктов анализа (оставляем)
+    FallOutlined,         // Для негативного аспекта (оставляем)
+    RiseOutlined          // Для позитивного аспекта в рекомендации
 } from '@ant-design/icons';
+import { motion, useAnimation, Variants } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const { Title, Paragraph, Text } = Typography;
 
-const CONTENT_MAX_WIDTH = '800px'; // Оставляем немного уже для лучшей читаемости текста
+const CONTENT_MAX_WIDTH = '860px'; // Чуть шире для этого блока
 
-const headerIconStyle: React.CSSProperties = { fontSize: '24px', marginRight: '12px' };
-const listItemIconStyle: React.CSSProperties = { fontSize: '16px', color: '#1890ff', marginRight: '8px' };
+// Анимации
+const sectionAppearAnimation: Variants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.7, ease: "easeOut", staggerChildren: 0.3 } 
+  },
+};
+
+const itemAppearAnimation: Variants = {
+  hidden: { opacity: 0, scale: 0.9, y: 20 },
+  visible: { 
+    opacity: 1, 
+    scale: 1, 
+    y: 0, 
+    transition: { duration: 0.5, ease: "circOut" } 
+  },
+};
+
 
 const ExampleInsightSection: React.FC = () => {
-  return (
-    <div className="section-padding example-insight-section" style={{ padding: '80px 0', backgroundColor: '#f0f2f5' /* Очень светлый фон */ }}>
-      <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px' }}>
-        <Title level={2} style={{ textAlign: 'center', marginBottom: '32px' }}>
-          Превратите Данные в Действие с UniFlow
-        </Title>
-        <Paragraph style={{ textAlign: 'center', fontSize: '16px', color: '#595959', marginBottom: '56px', maxWidth: '700px', margin: '0 auto 56px auto' }}>
-          Посмотрите, как наш ИИ-анализ помогает выявить скрытые проблемы и найти точки роста на конкретном примере:
-        </Paragraph>
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
 
-        <Card
-          bordered={false}
+  useEffect(() => {
+    if (inView) {
+      controls.start('visible');
+    }
+  }, [controls, inView]);
+
+  const headerIconStyle: React.CSSProperties = { fontSize: '28px', marginRight: '16px' };
+  const listItemIconStyle: React.CSSProperties = { fontSize: '18px', marginRight: '10px', marginTop: '5px' };
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={controls}
+      variants={sectionAppearAnimation}
+      className="section-padding example-insight-section" // Класс для стилизации
+      style={{ 
+        padding: '100px 0', 
+        backgroundColor: '#0D1B2A', // Очень темный синий фон секции
+        color: '#E0E6F0', // Светлый текст по умолчанию
+      }}
+    >
+      <div style={{ maxWidth: CONTENT_MAX_WIDTH, margin: '0 auto', padding: '0 20px' }}>
+        <motion.div variants={itemAppearAnimation}>
+          <Title level={2} style={{ textAlign: 'center', marginBottom: '32px', color: '#FFFFFF' }}>
+            Превратите Данные в <span style={{color: '#60A5FA'}}>Действие</span> с UniFlow
+          </Title>
+          <Paragraph style={{ textAlign: 'center', fontSize: '18px', color: '#A0AEC0', marginBottom: '64px', maxWidth: '720px', margin: '0 auto 64px auto' }}>
+            Посмотрите, как наш ИИ-анализ помогает выявить скрытые проблемы и найти точки роста на конкретном примере:
+          </Paragraph>
+        </motion.div>
+
+        {/* Основной контейнер для примера */}
+        <motion.div
+          variants={itemAppearAnimation}
+          className="insight-example-container" // Класс для стилизации
           style={{
-            borderRadius: '16px',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
-            padding: '32px', // Внутренний паддинг карты
+            // Стили будут в App.css
           }}
         >
           {/* Блок Проблемы */}
-          <div style={{ marginBottom: '24px' }}>
-            <Title level={4} style={{ display: 'flex', alignItems: 'center', color: '#d46b08' /* Темно-оранжевый */ }}>
-              <WarningFilled style={{ ...headerIconStyle, color: '#faad14' }} />
-              Обнаружена Проблема:
-            </Title>
-            <Paragraph style={{ fontSize: '16px', marginLeft: '36px', color: '#595959' }}>
-              <Text strong>Упущенная Прибыль</Text> — 90% сделок закрывается в безубыток.
+          <div className="insight-block problem-block">
+            <div className="insight-block-header">
+              <WarningTwoTone twoToneColor="#FBBF24" style={headerIconStyle} />
+              <Title level={4} style={{ color: '#FCD34D', margin: 0 }}>Обнаружена Проблема:</Title>
+            </div>
+            <Paragraph className="insight-block-content" style={{ fontSize: '17px', color: '#CBD5E1' }}>
+              <Text strong style={{ color: '#FDE68A' }}>Упущенная Прибыль</Text> — 90% сделок закрывается в безубыток.
             </Paragraph>
           </div>
 
-          <Divider style={{ margin: '28px 0' }} />
+          <div className="insight-separator"></div> {/* Кастомный разделитель */}
 
           {/* Блок Анализа */}
-          <div style={{ marginBottom: '28px' }}>
-            <Title level={4} style={{ display: 'flex', alignItems: 'center', color: '#0958d9' /* Темно-синий */ }}>
-              <BarChartOutlined style={{ ...headerIconStyle, color: '#1890ff' }} />
-              Ключевые Наблюдения UniFlow:
-            </Title>
-            <ul style={{ listStyle: 'none', paddingLeft: '36px', marginTop: '16px' }}>
-              <li style={{ marginBottom: '12px', display: 'flex', alignItems: 'flex-start' }}>
-                <FallOutlined style={{ ...listItemIconStyle, color: '#cf1322' /* Красный */, marginTop: '4px' }} />
-                <Text style={{ color: '#595959' }}>
-                  <Text strong>: 75% </Text>  совершенных сделок показывали в моменте прибыль <Text strong>+10-15%,</Text> но в итоге закрывались, откатываясь к стоп-лоссу.
+          <div className="insight-block analysis-block">
+            <div className="insight-block-header">
+              <FundProjectionScreenOutlined style={{ ...headerIconStyle, color: '#60A5FA' }} />
+              <Title level={4} style={{ color: '#93C5FD', margin: 0 }}>Ключевые Наблюдения UniFlow:</Title>
+            </div>
+            <ul className="insight-block-content" style={{ listStyle: 'none', paddingLeft: 0, marginTop: '16px' }}>
+              <li style={{ marginBottom: '14px', display: 'flex', alignItems: 'flex-start' }}>
+                <FallOutlined style={{ ...listItemIconStyle, color: '#F87171' /* Красный */ }} />
+                <Text style={{ color: '#CBD5E1', fontSize: '16px' }}>
+                  <Text strong style={{color: '#FECACA'}}>75%</Text> совершенных сделок показывали в моменте прибыль <Text strong  style={{color: '#BAE6FD'}}>+10-15%</Text>, но в итоге закрывались, откатываясь к стоп-лоссу.
                 </Text>
               </li>
-              <li style={{ marginBottom: '12px', display: 'flex', alignItems: 'flex-start' }}>
-                <FallOutlined style={{ ...listItemIconStyle, color: '#cf1322', marginTop: '4px' }} />
-                <Text style={{ color: '#595959' }}>
-                  <Text strong>Результат стратегии:</Text> Итоговая просадка <Text strong>-9%</Text>
+              <li style={{ marginBottom: '14px', display: 'flex', alignItems: 'flex-start' }}>
+                <FallOutlined style={{ ...listItemIconStyle, color: '#F87171' }} />
+                <Text style={{ color: '#CBD5E1', fontSize: '16px' }}>
+                  <Text strong style={{color: '#FECACA'}}>Результат стратегии:</Text> Итоговая просадка <Text strong style={{color: '#FCA5A5'}}>-9%</Text>
                 </Text>
               </li>
-              <li style={{ marginBottom: '12px', display: 'flex', alignItems: 'flex-start' }}>
-                <ArrowRightOutlined style={{ ...listItemIconStyle, marginTop: '4px' }} />
-                <Text style={{ color: '#595959' }}>
-                  <Text strong>Основная причина:</Text> Стратегия была нацелена на поиск очень крупных движений (30-50%), что редко реализовывалось на текущем рынке.
+              <li style={{ display: 'flex', alignItems: 'flex-start' }}>
+                <ArrowRightOutlined style={{ ...listItemIconStyle, color: '#60A5FA' }} />
+                <Text style={{ color: '#CBD5E1', fontSize: '16px' }}>
+                  <Text strong style={{color: '#BAE6FD'}}>Основная причина:</Text> Стратегия была нацелена на поиск очень крупных движений (30-50%), что редко реализовывалось на текущем рынке.
                 </Text>
               </li>
             </ul>
           </div>
 
-          <Divider style={{ margin: '28px 0' }} />
+          <div className="insight-separator"></div>
 
           {/* Блок Рекомендации */}
-          <div>
-            <Title level={4} style={{ display: 'flex', alignItems: 'center', color: '#08979c' /* Бирюзовый */ }}>
-              <BulbFilled style={{ ...headerIconStyle, color: '#13c2c2' }} />
-              Персональная Рекомендация ИИ:
-            </Title>
-            <div style={{
-              background: 'linear-gradient(135deg, #e6fffb 0%, #f6ffed 100%)', // Светло-зелено-бирюзовый градиент
-              borderLeft: '5px solid #52c41a', // Зеленая полоска
-              padding: '20px',
-              borderRadius: '8px',
-              marginTop: '16px',
-              marginLeft: '36px'
-            }}>
-              <Paragraph style={{ fontSize: '16px', lineHeight: '1.8', margin: 0, color: '#237804' /* Темно-зеленый текст */ }}>
-                "При достижении прибыли по сделке в <Text strong>+10%</Text>, рекомендуется фиксировать <Text strong>50%</Text> позиции, а стоп-лосс по оставшейся части переносить в безубыток.
-                Применение этой тактики к вашей истории сделок показало бы <Text strong style={{ color: '#389e0d' }}>прибыль +24%</Text> за последние 6 месяцев вместо текущего убытка <Text strong style={{ color: '#a8071a' }}>-9%</Text>."
+          <div className="insight-block recommendation-block">
+            <div className="insight-block-header">
+              <BulbTwoTone twoToneColor="#86EFAC" style={headerIconStyle} />
+              <Title level={4} style={{ color: '#A7F3D0', margin: 0 }}>Персональная Рекомендация ИИ:</Title>
+            </div>
+            <div 
+              className="insight-block-content recommendation-box" // Класс для стилизации бокса
+              style={{
+                // Стили будут в App.css
+              }}
+            >
+              <Paragraph style={{ fontSize: '17px', lineHeight: '1.8', margin: 0, color: '#D1FAE5' /* Светло-зеленый текст */ }}>
+                "При достижении прибыли по сделке в <Text strong style={{ color: '#FFFFFF' }}>+10%</Text>, рекомендуется фиксировать <Text strong style={{ color: '#FFFFFF' }}>50%</Text> позиции, а стоп-лосс по оставшейся части переносить в безубыток.
+                Применение этой тактики к вашей истории сделок показало бы <RiseOutlined style={{margin: '0 4px'}} />
+                <Text strong style={{ color: '#6EE7B7', fontSize: '18px' }}>прибыль +24%</Text> за последние 6 месяцев вместо текущего убытка <FallOutlined style={{margin: '0 4px'}}/>
+                <Text strong style={{ color: '#FDA4AF', fontSize: '18px' }}>-9%</Text>."
               </Paragraph>
             </div>
           </div>
-        </Card>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
